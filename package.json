@@ -7,11 +7,8 @@
     "start": "node index.js",
     "testing": "ngrok http 3000",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "heroku"
-  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
