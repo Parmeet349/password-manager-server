@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { encryptPassword, decrptPassword } = require('./encryptionHandlerService');
 const {issueJWT} = require('../utils/jwtHelper');
 const {decodeJWT} = require('../utils/jwtHelper');
+const nodemailer = require("nodemailer");
 
 const firebase = require('../firebase/firebase_connect')
 
@@ -359,7 +360,11 @@ const firebaseForgotPassword = async (data) => {
             let user = checkEmail.docs[0].data();
             let password = user.password;
             let iv = user.iv;
-            let encryptedPassword = await decrptPassword(password, iv);
+            let passwordData = {
+                password: password,
+                iv: iv
+            }
+            let decryptedPassword = await decrptPassword(passwordData);
             let email = user.email_address;
             let name = user.name;
             let phone_number = user.phone_number;
@@ -371,7 +376,7 @@ const firebaseForgotPassword = async (data) => {
                 phone_number: phone_number,
                 id: userId
             }
-            let message = `Hi ${name},\n\nYour password is ${encryptedPassword}.\n\nThank you.`;
+            let message = `Hi ${name},\n\nYour password is ${decryptedPassword.password}.\n\nThank you.`;
             let subject = "Password Reset";
             let emailData = {
                 message: message,
@@ -403,6 +408,32 @@ const firebaseForgotPassword = async (data) => {
     }
 }
 
+const sendEmail = async (data) => {
+    try{
+        const { message, subject, email, userData } = data;
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'sparmeet54@gmail.com',
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+        let mailOptions = {
+            from: 'sparmeet54@gmail.com',
+            to: email,
+            subject: subject,
+            text: message
+        };
+        let info = await transporter.sendMail(mailOptions);
+        console.log("Email sent", info);
+        return true;
+    }
+    catch(error){
+        console.log(error);
+        return false;
+    }
+}
+
 // Firebase Pssword Reset
 const firebaseChangePassword = async (data) => {
     try{
@@ -414,7 +445,7 @@ const firebaseChangePassword = async (data) => {
         if(checkEmail.empty){
             return {
                 success: false,
-                message: "Email address does not exist."
+                message: "User does not exist. Please create an account."
             }
         }
         else{

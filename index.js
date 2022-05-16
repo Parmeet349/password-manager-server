@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const colors = require('colors');
 
 // Import Constants and env Variables
-const PORT = 3000;
+// const PORT = 3000;
 
 // Import Database Connection
 // const sequelize = require('./db/db');
@@ -258,5 +258,5 @@ app.post("/generatePassword", async (req, res) => {
 
 // Start Server
 app.listen(process.env.PORT || 5000, () => {
-    console.log("Server is running on port " + PORT);
+    console.log("Server is running on port " + (process.env.PORT || 5000));
 });
