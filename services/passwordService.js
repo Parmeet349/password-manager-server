@@ -279,7 +279,12 @@ const getPasswordServiceById = async (passwordId, authToken) => {
                 if (decryptedPassword.success) {
                     return {
                         success: true,
-                        data: decryptedPassword.password
+                        // data: decryptedPassword.password
+                        data: {
+                            id: passwordId,
+                            title: passwordData.data().title,
+                            password: decryptedPassword.password
+                        }
                     }
                 }
                 else {
