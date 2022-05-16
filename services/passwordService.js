@@ -498,6 +498,7 @@ const getAllPasswordsService = async (token) => {
                         password: doc.data().password
                     });
                 });
+                console.log(colors.green("Passwords: ", passwords));
                 return {
                     success: true,
                     data: passwords

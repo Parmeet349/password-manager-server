@@ -286,7 +286,7 @@ const firebaseLogin = async (data) => {
         if(checkEmail.empty){
             return {
                 success: false,
-                message: "Email address does not exist."
+                message: "User does not exist. Please create an account."
             }
         }
         else{
@@ -353,7 +353,7 @@ const firebaseForgotPassword = async (data) => {
         if(checkEmail.empty){
             return {
                 success: false,
-                message: "Email address does not exist."
+                message: "User does not exist. Please create an account."
             }
         }
         else{
