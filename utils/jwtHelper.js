@@ -2,6 +2,7 @@ const colors = require('colors');
 const jwt = require('jsonwebtoken');
 // 
 const KEY = process.env.TOKEN_KEY;
+console.log("Token Key: ", KEY);
 
 // Generate JWT token
 const issueJWT = (user) => {
