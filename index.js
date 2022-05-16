@@ -9,7 +9,7 @@ const colors = require('colors');
 const PORT = 3000;
 
 // Import Database Connection
-const sequelize = require('./db/db');
+// const sequelize = require('./db/db');
 
 // const fireSignup = require('./firebase/firebase_connect');
 
@@ -29,16 +29,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Testing DB
-sequelize.authenticate()
-    .then(() => console.log('Connection has been established successfully.'))
-    .catch((error) => console.log('Unable to connect to the database: ', error));
+// sequelize.authenticate()
+//     .then(() => console.log('Connection has been established successfully.'))
+//     .catch((error) => console.log('Unable to connect to the database: ', error));
 
 // Database connection established and synced.
-sequelize.sync();
+// sequelize.sync();
 
 // Demo route to test server.
 app.get("/", (req, res) => {
-    // fireSignup();
     res.json({ message: "Welcome to Password Manager." });
 });
 
