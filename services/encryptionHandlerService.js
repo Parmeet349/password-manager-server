@@ -1,6 +1,8 @@
 // Import Packages
 const crypto = require('crypto');
 
+let ENCRYPTION_KEY = "3kd4oxab9zgzt6lk0oeq2q6l5fwgsnjl"
+
 // Function to encrypt password
 const encryptPassword = async (password) => {
     try {
@@ -10,7 +12,8 @@ const encryptPassword = async (password) => {
         // Generate Encrypted Cipher
         const cipher = crypto.createCipheriv(
             'aes-256-ctr', 
-            Buffer.from(process.env.ENCRYPTION_KEY), 
+            // Buffer.from(process.env.ENCRYPTION_KEY), 
+            Buffer.from(ENCRYPTION_KEY), 
             iv
         );
 
@@ -49,7 +52,8 @@ const decrptPassword = async (encryption) => {
         // Generate Decrypted Cipher
         const decipher = crypto.createDecipheriv(
             'aes-256-ctr',
-            Buffer.from(process.env.ENCRYPTION_KEY), 
+            // Buffer.from(process.env.ENCRYPTION_KEY), 
+            Buffer.from(ENCRYPTION_KEY), 
             Buffer.from(encryption.iv, 'hex')
         );
 
