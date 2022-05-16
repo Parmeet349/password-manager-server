@@ -11,9 +11,12 @@ const PORT = 3000;
 // Import Database Connection
 const sequelize = require('./db/db');
 
+// const fireSignup = require('./firebase/firebase_connect');
+
 // Import Services
 const { addPasswordService, updatePasswordService, deletePasswordService, getPasswordServiceById, getAllPasswordsService, generatePasswordService } = require('./services/passwordService');
-const { userInfoService, userLoginService, userSignUpService } = require('./services/userService');
+const { firebaseSignup, firebaseLogin, firebaseUserInfo, firebaseForgotPassword, firebaseChangePassword } = require('./services/userService');
+// const { userInfoService, userLoginService, userSignUpService, firebaseSignup, firebaseLogin, firebaseUserInfo, firebaseForgotPassword, firebaseChangePassword } = require('./services/userService');
 
 // Cors middleware
 let corsOptions = {
@@ -35,6 +38,7 @@ sequelize.sync();
 
 // Demo route to test server.
 app.get("/", (req, res) => {
+    // fireSignup();
     res.json({ message: "Welcome to Password Manager." });
 });
 
@@ -43,7 +47,8 @@ app.get("/getUserInfo", async (req, res) => {
     console.log("Auth Token: ", req.headers.authorization);
 
     try{
-        let userInfo = await userInfoService(req.headers.authorization);
+        // let userInfo = await userInfoService(req.headers.authorization);
+        let userInfo = await firebaseUserInfo(req.headers.authorization);
         
         if(userInfo.success){
             res.json({
@@ -73,7 +78,8 @@ app.post("/signup", async (req, res) => {
     
     console.log("Data in signup Controller: ", req.body);
     
-    let userSignup = await userSignUpService(req.body);
+    // let userSignup = await userSignUpService(req.body);
+    let userSignup = await firebaseSignup(req.body);
 
     if (userSignup.success) {
         res
@@ -90,7 +96,8 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
     console.log("Data in login Controller: ", req.body);
     
-    let userLogin = await userLoginService(req.body);
+    // let userLogin = await userLoginService(req.body);
+    let userLogin = await firebaseLogin(req.body);
     
     if (userLogin.success) {
         res
@@ -100,6 +107,42 @@ app.post("/login", async (req, res) => {
         res
             .status(400)
             .json(userLogin);
+        }
+});
+
+// User Forget password API
+app.post("/forgotPassword", async (req, res) => {
+    console.log("Data in forgotPassword Controller: ", req.body);
+
+    let forgotPassword = await firebaseForgotPassword(req.body);
+    console.log("forgotPassword: ", forgotPassword);
+
+    if (forgotPassword.success) {
+        res
+            .status(201)
+            .json(forgotPassword);
+    } else {
+        res
+            .status(400)
+            .json(forgotPassword);
+        }
+});
+
+// User Change password API
+app.post("/changePassword", async (req, res) => {
+    console.log("Data in changePassword Controller: ", req.body);
+
+    let changePassword = await firebaseChangePassword(req.body);
+    console.log("changePassword: ", changePassword);
+
+    if (changePassword.success) {
+        res
+            .status(201)
+            .json(changePassword);
+    } else {
+        res
+            .status(400)
+            .json(changePassword);
         }
 });
 

@@ -12,7 +12,7 @@ const issueJWT = (user) => {
     },
     process.env.TOKEN_KEY,
     {
-        expiresIn: "2h", // expires in 2 hours
+        expiresIn: "1y", // expires in 1 year
     });
     console.log("Token: ",colors.green(token));
 
