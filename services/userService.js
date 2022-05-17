@@ -314,6 +314,7 @@ const firebaseLogin = async (data) => {
                         success: true,
                         message: "User logged in successfully.",
                         data: {
+                            email_address: user.email_address,
                             token: token
                         }
                     }
