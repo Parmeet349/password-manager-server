@@ -4,19 +4,11 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const colors = require('colors');
-
-// Import Constants and env Variables
-// const PORT = 3000;
-
-// Import Database Connection
-// const sequelize = require('./db/db');
-
-// const fireSignup = require('./firebase/firebase_connect');
+require('dotenv').config();
 
 // Import Services
 const { addPasswordService, updatePasswordService, deletePasswordService, getPasswordServiceById, getAllPasswordsService, generatePasswordService } = require('./services/passwordService');
 const { firebaseSignup, firebaseLogin, firebaseUserInfo, firebaseForgotPassword, firebaseChangePassword } = require('./services/userService');
-// const { userInfoService, userLoginService, userSignUpService, firebaseSignup, firebaseLogin, firebaseUserInfo, firebaseForgotPassword, firebaseChangePassword } = require('./services/userService');
 
 // Cors middleware
 let corsOptions = {
@@ -28,14 +20,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Testing DB
-// sequelize.authenticate()
-//     .then(() => console.log('Connection has been established successfully.'))
-//     .catch((error) => console.log('Unable to connect to the database: ', error));
-
-// Database connection established and synced.
-// sequelize.sync();
-
 // Demo route to test server.
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Password Manager." });
@@ -43,42 +27,33 @@ app.get("/", (req, res) => {
 
 app.get("/getUserInfo", async (req, res) => {
 
-    console.log("Auth Token: ", req.headers.authorization);
-
-    try{
-        // let userInfo = await userInfoService(req.headers.authorization);
-        let userInfo = await firebaseUserInfo(req.headers.authorization);
-        
-        if(userInfo.success){
-            res.json({
-                success: true,
-                message: "User Info Fetched Successfully.",
-                data: userInfo.data
-            });
-        }
-        else{
-            res.json({
-                success: false,
-                message: "User Info Fetched Failed."
-            });
-        }
+    console.log("Auth Token in Controller: ", colors.blue(req.headers.authorization));
+    
+    let userInfo = await firebaseUserInfo(req.headers.authorization);
+    console.log("User Info: ", colors.green(userInfo));
+    
+    if(userInfo.success){
+        res.json({
+            success: true,
+            message: "User Info Fetched Successfully.",
+            data: userInfo.data
+        });
     }
-    catch(error){
-        console.log(error);
+    else{
         res.json({
             success: false,
-            error: error
+            message: "User Info Fetched Failed."
         });
     }
 });
 
 // User Sign Up API
 app.post("/signup", async (req, res) => {
+
+    console.log("Data in Signup Controller: ", colors.blue(req.body));
     
-    console.log("Data in signup Controller: ", req.body);
-    
-    // let userSignup = await userSignUpService(req.body);
     let userSignup = await firebaseSignup(req.body);
+    console.log("User Signup: ", colors.green(userSignup));
 
     if (userSignup.success) {
         res
@@ -88,15 +63,16 @@ app.post("/signup", async (req, res) => {
         res
             .status(400)
             .json(userSignup);
-        }
+    }
 });
 
 // User Login API
 app.post("/login", async (req, res) => {
-    console.log("Data in login Controller: ", req.body);
+
+    console.log("Data in Login Controller: ", colors.blue(req.body));
     
-    // let userLogin = await userLoginService(req.body);
     let userLogin = await firebaseLogin(req.body);
+    console.log("User Login: ", colors.green(userLogin));
     
     if (userLogin.success) {
         res
@@ -106,15 +82,16 @@ app.post("/login", async (req, res) => {
         res
             .status(400)
             .json(userLogin);
-        }
+    }
 });
 
 // User Forget password API
 app.post("/forgotPassword", async (req, res) => {
-    console.log("Data in forgotPassword Controller: ", req.body);
+
+    console.log("Data in forgotPassword Controller: ", colors.blue(req.body));
 
     let forgotPassword = await firebaseForgotPassword(req.body);
-    console.log("forgotPassword: ", forgotPassword);
+    console.log("forgotPassword: ", colors.green(forgotPassword));
 
     if (forgotPassword.success) {
         res
@@ -124,15 +101,16 @@ app.post("/forgotPassword", async (req, res) => {
         res
             .status(400)
             .json(forgotPassword);
-        }
+    }
 });
 
 // User Change password API
 app.post("/changePassword", async (req, res) => {
-    console.log("Data in changePassword Controller: ", req.body);
+
+    console.log("Data in changePassword Controller: ", colors.blue(req.body));
 
     let changePassword = await firebaseChangePassword(req.body);
-    console.log("changePassword: ", changePassword);
+    console.log("changePassword: ", colors.green(changePassword));
 
     if (changePassword.success) {
         res
@@ -147,10 +125,12 @@ app.post("/changePassword", async (req, res) => {
 
 // Add Password API
 app.post("/addPassword", async (req, res) => {
-    console.log("Data in addPassword Controller: ", req.body);
-    console.log("Auth Token: ", req.headers.authorization);
+
+    console.log("Data in addPassword Controller: ", colors.blue(req.body));
+    console.log("Auth Token in Controller: ", colors.blue(req.headers.authorization));
 
     let addPassword = await addPasswordService(req.body, req.headers.authorization);
+    console.log("addPassword: ", colors.green(addPassword));
 
     if (addPassword.success) {
         res
@@ -166,10 +146,11 @@ app.post("/addPassword", async (req, res) => {
 // Update Password for specific website/app using its ID
 app.put("/updatePassword/:id", async (req, res) => {
 
-    console.log("Data in updatePassword Controller: ", req.params.id);
-    console.log("Auth Token: ", req.headers.authorization);
+    console.log("Data in updatePassword Controller: ", colors.blue(req.params.id));
+    console.log("Auth Token in Controller: ", colors.blue(req.headers.authorization));
 
     let updatePassword = await updatePasswordService(req.params.id, req.body, req.headers.authorization);
+    console.log("updatePassword: ", colors.green(updatePassword));
 
     if (updatePassword.success) {
         res
@@ -185,10 +166,11 @@ app.put("/updatePassword/:id", async (req, res) => {
 // Get Password for specific website/app using its ID
 app.get("/getPassword/:id", async (req, res) => {
 
-    console.log("Data in getPassword Controller: ", req.params.id);
-    console.log("Auth Token: ", req.headers.authorization);
+    console.log("Data in getPassword Controller: ", colors.blue(req.params.id));
+    console.log("Auth Token in Controller: ", colors.blue(req.headers.authorization));
 
     let getPassword = await getPasswordServiceById(req.params.id, req.headers.authorization);
+    console.log("getPassword: ", colors.green(getPassword));
 
     if (getPassword.success) {
         res
@@ -204,10 +186,11 @@ app.get("/getPassword/:id", async (req, res) => {
 // Delete Password for specific website/app using its ID
 app.post("/deletePassword/:id", async (req, res) => {
 
-    console.log("Data in deletePassword Controller: ", req.params.id);
-    console.log("Auth Token: ", req.headers.authorization);
+    console.log("Data in deletePassword Controller: ", colors.blue(req.params.id));
+    console.log("Auth Token in Contoller: ", colors.blue(req.headers.authorization));
 
     let deletePassword = await deletePasswordService(req.params.id, req.headers.authorization);
+    console.log("deletePassword: ", colors.green(deletePassword));
 
     if (deletePassword.success) {
         res
@@ -223,9 +206,10 @@ app.post("/deletePassword/:id", async (req, res) => {
 // Get All Passwords for specific user
 app.get("/getAllPasswords/", async (req, res) => {
 
-    console.log("Auth Token: ", req.headers.authorization);
+    console.log("Auth Token in Controller: ", req.headers.authorization);
 
     let getAllPasswords = await getAllPasswordsService(req.headers.authorization);
+    console.log("getAllPasswords: ", colors.green(getAllPasswords));
 
     if (getAllPasswords.success) {
         res
@@ -241,9 +225,10 @@ app.get("/getAllPasswords/", async (req, res) => {
 // Generate Password API
 app.post("/generatePassword", async (req, res) => {
 
-    console.log("Auth Token: ", req.headers.authorization);
+    console.log("Auth Token in Controller: ", colors.blue(req.headers.authorization));
 
     let generatePassword = await generatePasswordService(req.headers.authorization);
+    console.log("generatePassword: ", colors.green(generatePassword));
 
     if (generatePassword.success) {
         res

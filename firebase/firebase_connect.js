@@ -11,9 +11,9 @@ const firebaseDb = firebaseApp.firestore();
 // var defaultDatabase = firebaseApp.database();
 
 if(firebaseDb){
-    console.log(colors.green("Firebase Connected"));
+    console.log(colors.green("Connected to Firebase Database"));
 } else {
-    console.log(colors.red("Firebase Not Connected"));
+    console.log(colors.red("Failed to Conntect to Firebase Database"));
 }
 
 module.exports = firebaseDb;

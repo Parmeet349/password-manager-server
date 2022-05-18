@@ -1,217 +1,15 @@
 // Import Packages
 const colors = require('colors');
+const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+
+// Import Firebase Database Connection
+const firebase = require('../firebase/firebase_connect')
 
 // Import Services and Utils
 const { encryptPassword, decrptPassword } = require('./encryptionHandlerService');
 const {issueJWT} = require('../utils/jwtHelper');
 const {decodeJWT} = require('../utils/jwtHelper');
-const nodemailer = require("nodemailer");
-
-const firebase = require('../firebase/firebase_connect')
-
-// Import Module 
-const User = require('../models/DOB/t_user.model');
-
-// const userInfoService = async (authToken) => {
-//     try {
-//         let loggedInUser = decodeJWT(authToken);
-
-//         if(loggedInUser){
-//             let user = await User.findByPk({
-//                 where: {
-//                     id: loggedInUser
-//                 }
-//             });
-
-//             if(user){
-//                 return {
-//                     success: true,
-//                     message: "User Info Fetched Successfully.",
-//                     data: user
-//                 };
-//             }
-//             else{
-//                 return {
-//                     success: false,
-//                     message: "User Info Fetched Failed."
-//                 };
-//             }
-//         }
-//     }
-//     catch (error) {
-//         console.log(colors.red("Error"));
-//         console.log(error);
-//         return {
-//             success: false,
-//             error: error
-//         };
-//     }
-// }
-
-//Function to Signup User
-// const userSignUpService = async (data) => {
-//     try{
-//         const { name, email_address, password, phone_number } = data;
-
-//         // Check if phone_number already exists
-//         let checkPhoneNumber = await User.findOne({
-//             where: {
-//                 phone_number: phone_number
-//             }
-//         });
-
-//         if(checkPhoneNumber){
-//             return {
-//                 success: false,
-//                 message: "Phone number already exists."
-//             }
-//         }
-
-//         // Check if email_address already exists
-//         let checkEmail = await User.findOne({
-//             where: {
-//                 email_address: email_address
-//             }
-//         });
-
-//         if(checkEmail){
-//             return {
-//                 success: false,
-//                 message: "Email address already exists."
-//             }
-//         }
-
-//         if(!checkEmail && !checkPhoneNumber){
-//             if(name && email_address && password && phone_number){
-
-//                 let encryptedPassword = await encryptPassword(password);
-//                 let user = await User.create({
-//                     name: name,
-//                     email_address: email_address,
-//                     password: encryptedPassword.password,
-//                     iv: encryptedPassword.iv,
-//                     phone_number: phone_number,
-//                 });
-
-//                 if(user){
-//                     const token = issueJWT(user);
-//                     if(token){
-//                         return {
-//                             success: true,
-//                             message: "User created successfully.",
-//                             data: {
-//                                 name: user.name,
-//                                 email_address: user.email_address,
-//                                 phone_number: user.phone_number,
-//                                 token: token
-//                             }
-//                         }
-//                     }
-//                     else{
-//                         return {
-//                             success: false,
-//                             message: "Error While creating Token."
-//                         }
-//                     }
-//                 }
-//                 else{
-//                     return {
-//                         success: false,
-//                         message: "User not created."
-//                     }
-//                 }
-//             }
-//             else{
-//                 return {
-//                     success: false,
-//                     message: "Please fill all the fields."
-//                 }
-//             }
-//         }
-//         else{
-//             return {
-//                 success: false,
-//                 message: "User already exists."
-//             }
-//         }
-//     }
-//     catch(error){
-//         console.log(error);
-//         return {
-//             success: false,
-//             error: error
-//         };
-//     }
-// }
-
-// Function to Login User
-// const userLoginService = async (data) => {
-//     try{
-
-//         const { email_address, password } = data;
-//         let checkEmail = {}
-
-//         if(email_address != null){
-//             checkEmail = await User.findOne({
-//                 where: {
-//                     email_address: email_address
-//                 }
-//             });
-//         }
-
-//         if(!checkEmail){
-//             return {
-//                 success: false,
-//                 message: "User does not exist."
-//             }
-//         }
-//         else{
-
-//             let token = issueJWT(checkEmail);
-
-//             let passwordData = {
-//                 password: checkEmail.password,
-//                 iv: checkEmail.iv
-//             }
-//             console.log("Password Data: ",colors.green(passwordData))
-//             let decryptedPassword = await decrptPassword(passwordData);
-//             console.log("Decrypted Password: ",colors.green(decryptedPassword))
-
-//             if(decryptedPassword.success){
-//                 if(decryptedPassword.password == password){
-//                     return {
-//                         success: true,
-//                         message: "User logged in successfully.",
-//                         data: {
-//                             id: checkEmail.id,
-//                             name: checkEmail.name,
-//                             email_address: checkEmail.email_address,
-//                             phone_number: checkEmail.phone_number,
-//                             token: token
-//                         }
-//                     }
-//                 }
-//                 else{
-//                     return {
-//                         success: false,
-//                         message: "Password is incorrect."
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     catch(error){
-//         console.log(colors.red("Error"));
-//         console.log(error);
-//         return {
-//             success: false,
-//             error: error
-//         };
-//     }
-// }
-
-
 
 // Firebase User Signup
 const firebaseSignup = async (data) => {
@@ -222,17 +20,19 @@ const firebaseSignup = async (data) => {
         let checkPhoneNumber = await firebase.collection('users').where('phone_number', '==', phone_number).get();
         console.log("Checking Phone Number", checkPhoneNumber)
 
+        // Check if phone_number already exists
         if(checkPhoneNumber.empty){
             // Check if email_address already exists
             let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+            console.log("Checking Email Address", checkEmail)
 
-            // Get User Details
-
-
+            // Check if email_address already exists
             if(checkEmail.empty){
                 if(name && email_address && password && phone_number){
-                    
+                    // Encrypt password
                     let encryptedPassword = await encryptPassword(password);
+
+                    // Create user in Firebase
                     let user = await firebase.collection('users').add({
                         name: name,
                         email_address: email_address,
@@ -241,6 +41,17 @@ const firebaseSignup = async (data) => {
                         phone_number: phone_number,
                     });
                     console.log("User details", colors.magenta(user))
+                    
+                    return{
+                        success: true,
+                        message: "User created successfully.",
+                        data: {
+                            user_id: user.id,
+                            name: name,
+                            email_address: email_address,
+                            phone_number: phone_number,
+                        }
+                    }
                 }
                 else{
                     return {
@@ -262,10 +73,6 @@ const firebaseSignup = async (data) => {
                 message: "Phone number already exists."
             }
         }
-        return {
-            success: true,
-            message: "User created successfully."
-        }
     }
     catch(error){
         console.log(error);
@@ -283,6 +90,8 @@ const firebaseLogin = async (data) => {
         
         // Check if email_address already exists
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+
+        // Check if email_address already exists
         if(checkEmail.empty){
             return {
                 success: false,
@@ -290,6 +99,7 @@ const firebaseLogin = async (data) => {
             }
         }
         else{
+            // Get user details
             let user = checkEmail.docs[0].data();
             console.log("User Details", user)
 
@@ -305,10 +115,15 @@ const firebaseLogin = async (data) => {
                 password: user.password,
                 iv: user.iv
             }
+            // Decrypt password
             let decryptedPassword = await decrptPassword(passwordData);
             
+            // Check if password matches
             if(password === decryptedPassword.password){
+                // Create JWT Token
                 const token = issueJWT(tokenData);
+
+                // Check if token is created
                 if(token){
                     return {
                         success: true,
@@ -351,6 +166,7 @@ const firebaseForgotPassword = async (data) => {
         // Check if email_address already exists
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
 
+        // Check if email_address already exists
         if(checkEmail.empty){
             return {
                 success: false,
@@ -365,6 +181,7 @@ const firebaseForgotPassword = async (data) => {
                 password: password,
                 iv: iv
             }
+            // Decrypt password
             let decryptedPassword = await decrptPassword(passwordData);
             let email = user.email_address;
             let name = user.name;
@@ -385,6 +202,8 @@ const firebaseForgotPassword = async (data) => {
                 email: email,
                 userData: userData
             }
+
+            // Send email
             let emailSent = await sendEmail(emailData);
             if(emailSent){
                 return {
@@ -409,9 +228,12 @@ const firebaseForgotPassword = async (data) => {
     }
 }
 
+// Function to Send Email
 const sendEmail = async (data) => {
     try{
         const { message, subject, email, userData } = data;
+
+        // Create Email Template
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -425,6 +247,8 @@ const sendEmail = async (data) => {
             subject: subject,
             text: message
         };
+
+        // Send Email
         let info = await transporter.sendMail(mailOptions);
         console.log("Email sent", info);
         return true;
@@ -443,6 +267,7 @@ const firebaseChangePassword = async (data) => {
         // Check if email_address already exists
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
         
+        // Check if email_address already exists
         if(checkEmail.empty){
             return {
                 success: false,
@@ -455,19 +280,24 @@ const firebaseChangePassword = async (data) => {
                 password: user.password,
                 iv: user.iv
             }
+            // Decrypt password
             let decryptedPassword = await decrptPassword(passwordData);
-            console.log("Decrypted Password", decryptedPassword)
+
+            // Check if password matches
             if(password === decryptedPassword.password){
                 let encryptedNewPassword = await encryptPassword(new_password);
-                console.log("Encrypted Password", encryptedNewPassword)
 
                 let id = checkEmail.docs[0].id;
-                console.log(id)
+                console.log("", colors.green(id))
+
+                // Update password
                 let updatePassword = await firebase.collection('users').doc(id).update({
                     password: encryptedNewPassword.password,
                     iv: encryptedNewPassword.iv
                 });
                 console.log("Update Password", updatePassword)
+
+                // Check if password updated
                 if(updatePassword){
                     return {
                         success: true,
@@ -502,14 +332,29 @@ const firebaseChangePassword = async (data) => {
 const firebaseUserInfo = async (authToken) => {
 
     try{
+        // Get user id from token
         let decodedToken = await decodeJWT(authToken);
         console.log("Decoded Token", decodedToken)
+        
+        // If token is valid
         if(decodedToken){
             let userId = decodedToken
+
+            // Get user info from firebase
             let userData = await firebase.collection('users').doc(userId).get();
-            return {
-                success: true,
-                data: userData.data()
+
+            // Check if user exists
+            if(userData.exists){
+                return {
+                    success: true,
+                    data: userData.data()
+                }
+            }
+            else{
+                return {
+                    success: false,
+                    message: "User does not exist."
+                }
             }
         }
         else{
@@ -528,11 +373,7 @@ const firebaseUserInfo = async (authToken) => {
     }
 }
 
-
 module.exports = {
-    // userInfoService,
-    // userSignUpService,
-    // userLoginService,
     firebaseSignup,
     firebaseLogin,
     firebaseForgotPassword,
