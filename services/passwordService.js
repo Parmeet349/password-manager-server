@@ -18,7 +18,9 @@ const addPasswordService = async (data, authToken) => {
         console.log("LoggedInUser ID: ",colors.green(loggedInUser));
 
         // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
 
         // If User exists
         if(userData.exists){
@@ -84,13 +86,19 @@ const updatePasswordService = async (passwordId ,data, authToken) => {
         console.log("User ID: ",colors.green(loggedInUser));
 
         // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
+
         // If User exists
         if(userData.exists){
             console.log(colors.green("User Exists!"));
             
             // Check if password exists
+            console.log("Checking Password Exists");
             let checkPasswordExists = await firebase.collection('passwords').doc(passwordId).get();
+            console.log("Check Password Exists");
+
             if(checkPasswordExists.exists){
                 console.log(colors.green("Password Exists!"));
 
@@ -169,12 +177,18 @@ const getPasswordServiceById = async (passwordId, authToken) => {
         let loggedInUser = decodeJWT(authToken);
         console.log("LoggedInUser ID: ",colors.green(loggedInUser));
 
+        // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
 
         // Check if user exists
         if(userData.exists){
             console.log(colors.green("User Found!"))
+
+            console.log("Getting Password Details");
             let passwordData = await firebase.collection('passwords').doc(passwordId).get();
+            console.log("Password Data Retrieved Successfully!");
 
             // Check if password exists
             if(passwordData.exists){
@@ -188,7 +202,6 @@ const getPasswordServiceById = async (passwordId, authToken) => {
                         iv: passwordData.data().iv
                     }
                     let decryptedPassword = await decrptPassword(decrptPasswordData);
-                    console.log("Decrypted Password: ",colors.green(decryptedPassword));
 
                     // If decrypted password generated successfully
                     if (decryptedPassword.success) {
@@ -250,13 +263,18 @@ const deletePasswordService = async (passwordId, authToken) => {
         let loggedInUser = decodeJWT(authToken);
         console.log("User ID: ",colors.green(loggedInUser));
 
+        // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
 
         // Check if user exists
         if(userData.exists){
             console.log(colors.green("User Found!"))
 
+            console.log("Getting Password Details");
             let passwordData = await firebase.collection('passwords').doc(passwordId).get();
+            console.log("Password Data Retrieved Successfully!");
 
             // Check if password exists
             if(passwordData.exists){
@@ -265,7 +283,9 @@ const deletePasswordService = async (passwordId, authToken) => {
                 // Check if Password is created by logged in user
                 if(passwordData.data().created_by === loggedInUser){
                     // Delete Password from firebase
+                    console.log("Deleting Password");
                     let deletePassword = await firebase.collection('passwords').doc(passwordId).delete();
+                    console.log("Password Deleted Successfully!");
 
                     // If Password deleted successfully
                     if(deletePassword){
@@ -324,14 +344,18 @@ const getAllPasswordsService = async (token) => {
         console.log("User ID: ",colors.green(loggedInUser));
 
         // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
 
         // Check if user exists
         if(userData.exists){
             console.log(colors.green("User Found!"))
 
             // Get all Passwords
+            console.log("Getting all Passwords");
             let allPasswords = await firebase.collection('passwords').where('created_by', '==', loggedInUser).get();
+            console.log("All Passwords Retrieved Successfully!");
 
             // If Passwords not found
             if(allPasswords.empty){
@@ -382,7 +406,9 @@ const generatePasswordService = async (authToken) => {
         console.log("User ID: ",colors.green(loggedInUser));
             
         // Get User deatils
+        console.log("Getting User Details");
         let userData = await firebase.collection('users').doc(loggedInUser).get();
+        console.log("User Data Retrieved Successfully!");
 
         // If User exists
         if(userData.exists){

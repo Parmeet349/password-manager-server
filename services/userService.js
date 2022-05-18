@@ -17,14 +17,16 @@ const firebaseSignup = async (data) => {
         const { name, email_address, password, phone_number } = data;
 
         // Check if phone_number already exists
+        console.log("Checking Phone Number Exists");
         let checkPhoneNumber = await firebase.collection('users').where('phone_number', '==', phone_number).get();
-        console.log("Checking Phone Number", checkPhoneNumber)
+        console.log("Phone Number Checked Successfully");
 
         // Check if phone_number already exists
         if(checkPhoneNumber.empty){
             // Check if email_address already exists
+            console.log("Checking Email Address Exists");
             let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
-            console.log("Checking Email Address", checkEmail)
+            console.log("Phone Email Address Successfully");
 
             // Check if email_address already exists
             if(checkEmail.empty){
@@ -40,7 +42,6 @@ const firebaseSignup = async (data) => {
                         iv: encryptedPassword.iv,
                         phone_number: phone_number,
                     });
-                    console.log("User details", colors.magenta(user))
                     
                     return{
                         success: true,
@@ -89,7 +90,9 @@ const firebaseLogin = async (data) => {
         const { email_address, password } = data;
         
         // Check if email_address already exists
+        console.log("Checking Email Address Exists");
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        console.log("Email Address Checked Successfully");
 
         // Check if email_address already exists
         if(checkEmail.empty){
@@ -101,7 +104,6 @@ const firebaseLogin = async (data) => {
         else{
             // Get user details
             let user = checkEmail.docs[0].data();
-            console.log("User Details", user)
 
             // Get Id or key of the user
             let id = checkEmail.docs[0].id;
@@ -164,7 +166,9 @@ const firebaseForgotPassword = async (data) => {
         const { email_address } = data;
 
         // Check if email_address already exists
+        console.log("Checking Email Address Exists");
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        console.log("Email Address Checked Successfully");
 
         // Check if email_address already exists
         if(checkEmail.empty){
@@ -265,7 +269,9 @@ const firebaseChangePassword = async (data) => {
         const { email_address, password, new_password } = data;
 
         // Check if email_address already exists
+        console.log("Checking Email Address Exists");
         let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        console.log("Email Address Checked Successfully");
         
         // Check if email_address already exists
         if(checkEmail.empty){
@@ -341,13 +347,14 @@ const firebaseUserInfo = async (authToken) => {
             let userId = decodedToken
 
             // Get user info from firebase
+            console.log("Getting User Details");
             let userData = await firebase.collection('users').doc(userId).get();
+            console.log("User Details Retrieved Successfully");
 
             // Check if user exists
             if(userData.exists){
                 return {
                     success: true,
-                    // data: userData.data()
                     data: {
                         id: userData.data().id,
                         name: userData.data().name,
