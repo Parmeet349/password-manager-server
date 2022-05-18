@@ -347,7 +347,13 @@ const firebaseUserInfo = async (authToken) => {
             if(userData.exists){
                 return {
                     success: true,
-                    data: userData.data()
+                    // data: userData.data()
+                    data: {
+                        id: userData.data().id,
+                        name: userData.data().name,
+                        email_address: userData.data().email_address,
+                        phone_number: userData.data().phone_number
+                    }
                 }
             }
             else{
