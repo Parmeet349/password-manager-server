@@ -356,7 +356,7 @@ const firebaseUserInfo = async (authToken) => {
                 return {
                     success: true,
                     data: {
-                        id: userData.data().id,
+                        id: userId,
                         name: userData.data().name,
                         email_address: userData.data().email_address,
                         phone_number: userData.data().phone_number
