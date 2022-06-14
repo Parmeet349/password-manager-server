@@ -5,13 +5,16 @@ const colors = require('colors');
 const firebase = require('../firebase/firebase_connect')
 
 // Import Sevices
-const { encryptPassword, decrptPassword } = require('./encryptionHandlerService');
+const { 
+    encryptPassword, 
+    decrptPassword 
+} = require('./encryptionHandlerService');
 const { decodeJWT } = require('../utils/jwtHelper');
 
 // Function to save Password in Firebase
 const addPasswordService = async (data, authToken) => {
     try {
-        const { title, password } = data;
+        const { userName, title, password } = data;
 
         // Decodes Auth Token to get user ID
         let loggedInUser = decodeJWT(authToken);
@@ -32,6 +35,7 @@ const addPasswordService = async (data, authToken) => {
                 console.log(colors.green("Password Encrypted!"));
                 // Save Data in Firebase
                 let addPassword = await firebase.collection('passwords').add({
+                    userName: userName,
                     title: title,
                     password: encryptedPassword.password,
                     iv: encryptedPassword.iv,
@@ -79,7 +83,7 @@ const addPasswordService = async (data, authToken) => {
 // Function to update Password in DB
 const updatePasswordService = async (passwordId ,data, authToken) => {
     try{
-        let { title, password } = data;
+        let { userName, title, password } = data;
 
         // Decodes Auth Token to get user ID
         let loggedInUser = decodeJWT(authToken);
@@ -110,6 +114,7 @@ const updatePasswordService = async (passwordId ,data, authToken) => {
                         console.log(colors.green("Password Encrypted!"));
                         // Update Password in Firebase
                         let updatePassword = await firebase.collection('passwords').doc(passwordId).update({
+                            userName: userName,
                             title: title,
                             password: encryptedPassword.password,
                             iv: encryptedPassword.iv
@@ -209,6 +214,7 @@ const getPasswordServiceById = async (passwordId, authToken) => {
                             success: true,
                             data: {
                                 id: passwordId,
+                                userName: passwordData.data().userName,
                                 title: passwordData.data().title,
                                 password: decryptedPassword.password
                             }
@@ -371,6 +377,7 @@ const getAllPasswordsService = async (token) => {
                 allPasswords.forEach(doc => {
                     passwords.push({
                         id: doc.id,
+                        userName: doc.data().userName,
                         title: doc.data().title,
                         password: doc.data().password
                     });
