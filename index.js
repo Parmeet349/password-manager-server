@@ -7,8 +7,21 @@ const colors = require('colors');
 require('dotenv').config();
 
 // Import Services
-const { addPasswordService, updatePasswordService, deletePasswordService, getPasswordServiceById, getAllPasswordsService, generatePasswordService } = require('./services/passwordService');
-const { firebaseSignup, firebaseLogin, firebaseUserInfo, firebaseForgotPassword, firebaseChangePassword } = require('./services/userService');
+const { 
+    addPasswordService, 
+    updatePasswordService, 
+    deletePasswordService, 
+    getPasswordServiceById, 
+    getAllPasswordsService, 
+    generatePasswordService 
+} = require('./services/passwordService');
+const { 
+    firebaseSignup, 
+    firebaseLogin, 
+    firebaseUserInfo, 
+    firebaseForgotPassword, 
+    firebaseChangePassword 
+} = require('./services/userService');
 
 // Cors middleware
 let corsOptions = {
