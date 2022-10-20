@@ -384,7 +384,7 @@ const getAllPasswordsService = async (token) => {
                 });
                 console.log(colors.green("Passwords: ", passwords));
                 let finalData = {
-                    userData: userData,
+                    userData: userData.data(),
                     passwords: passwords
                 }
                 return {
