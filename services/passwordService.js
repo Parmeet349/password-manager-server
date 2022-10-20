@@ -383,9 +383,13 @@ const getAllPasswordsService = async (token) => {
                     });
                 });
                 console.log(colors.green("Passwords: ", passwords));
+                let finalData = {
+                    userData: userData,
+                    passwords: passwords
+                }
                 return {
                     success: true,
-                    data: passwords
+                    data: finalData
                 };
             }
         }
