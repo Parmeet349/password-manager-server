@@ -16,9 +16,10 @@ const firebaseSignup = async (data) => {
     try{
         const { name, email_address, password, phone_number } = data;
 
-        console.log("Email address untrim: ", email_address);
         let email_address_trim = email_address.trim();
-        console.log("Email address: ", email_address_trim);
+
+        // lowercase email_address
+        email_address_trim = email_address_trim.toLowerCase();
 
         // Check if phone_number already exists
         console.log("Checking Phone Number Exists");
@@ -94,10 +95,10 @@ const firebaseLogin = async (data) => {
         const { email_address, password } = data;
 
         // if space in start or end of email_address remove it
-        // let email_address = email_address_untrim.trim();
-        console.log("Email addressuntrim: ", email_address);
         let email_address_trim = email_address.trim();
-        console.log("Email address: ", email_address_trim);
+
+        // lowercase email_address
+        email_address_trim = email_address_trim.toLowerCase();
         
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -176,9 +177,10 @@ const firebaseForgotPassword = async (data) => {
         const { email_address } = data;
 
         // let email_address = email_address_.trim();
-        console.log("Email addressuntrim: ", email_address);
         let email_address_trim = email_address.trim();
-        console.log("Email address: ", email_address_trim);
+
+        // lowercase email_address
+        email_address_trim = email_address_trim.toLowerCase();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -283,10 +285,10 @@ const firebaseChangePassword = async (data) => {
     try{
         const { email_address, password, new_password } = data;
 
-        // let email_address = email_address_.trim();
-        console.log("Email addressuntrim: ", email_address);
         let email_address_trim = email_address.trim();
-        console.log("Email address: ", email_address_trim);
+
+        // lowercase email_address
+        email_address_trim = email_address_trim.toLowerCase();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
