@@ -390,6 +390,9 @@ const getAllPasswordsService = async (token) => {
                 if(passwords.length > 0){
                     finalData.passwords = passwords;
                 }
+                else{
+                    finalData.passwords = [];
+                }
                 return {
                     success: true,
                     data: finalData
