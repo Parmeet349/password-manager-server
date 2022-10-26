@@ -368,7 +368,10 @@ const getAllPasswordsService = async (token) => {
                 console.log(colors.red("No Passwords Found!"))
                 return {
                     success: false,
-                    message: "No Passwords found."
+                    message: "No Passwords found.",
+                    data: {
+                        userData: userData.data()
+                    }
                 };
             }
             else{
