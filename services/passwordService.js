@@ -374,6 +374,9 @@ const getAllPasswordsService = async (token) => {
             else{
                 console.log(colors.green("Passwords Found!"))
                 let passwords = [];
+                let finalData = {
+                    userData: userData.data(),
+                };
                 allPasswords.forEach(doc => {
                     passwords.push({
                         id: doc.id,
@@ -383,9 +386,9 @@ const getAllPasswordsService = async (token) => {
                     });
                 });
                 console.log(colors.green("Passwords: ", passwords));
-                let finalData = {
-                    userData: userData.data(),
-                    passwords: passwords
+                // if passwords is not empty
+                if(passwords.length > 0){
+                    finalData.passwords = passwords;
                 }
                 return {
                     success: true,
