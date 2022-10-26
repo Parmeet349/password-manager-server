@@ -14,9 +14,11 @@ const {decodeJWT} = require('../utils/jwtHelper');
 // Firebase User Signup
 const firebaseSignup = async (data) => {
     try{
-        const { name, email_address_, password, phone_number } = data;
+        const { name, email_address, password, phone_number } = data;
 
-        let email_address = email_address_.trim();
+        console.log("Email address untrim: ", email_address);
+        let email_address_trim = email_address.trim();
+        console.log("Email address: ", email_address_trim);
 
         // Check if phone_number already exists
         console.log("Checking Phone Number Exists");
@@ -27,19 +29,19 @@ const firebaseSignup = async (data) => {
         if(checkPhoneNumber.empty){
             // Check if email_address already exists
             console.log("Checking Email Address Exists");
-            let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+            let checkEmail = await firebase.collection('users').where('email_address', '==', email_address_trim).get();
             console.log("Phone Email Address Successfully");
 
             // Check if email_address already exists
             if(checkEmail.empty){
-                if(name && email_address && password && phone_number){
+                if(name && email_address_trim && password && phone_number){
                     // Encrypt password
                     let encryptedPassword = await encryptPassword(password);
 
                     // Create user in Firebase
                     let user = await firebase.collection('users').add({
                         name: name,
-                        email_address: email_address,
+                        email_address: email_address_trim,
                         password: encryptedPassword.password,
                         iv: encryptedPassword.iv,
                         phone_number: phone_number,
@@ -51,7 +53,7 @@ const firebaseSignup = async (data) => {
                         data: {
                             user_id: user.id,
                             name: name,
-                            email_address: email_address,
+                            email_address: email_address_trim,
                             phone_number: phone_number,
                         }
                     }
@@ -89,14 +91,17 @@ const firebaseSignup = async (data) => {
 // Firebase User Login
 const firebaseLogin = async (data) => {
     try{
-        const { email_address_, password } = data;
+        const { email_address, password } = data;
 
         // if space in start or end of email_address remove it
-        let email_address = email_address_.trim();
+        // let email_address = email_address_untrim.trim();
+        console.log("Email addressuntrim: ", email_address);
+        let email_address_trim = email_address.trim();
+        console.log("Email address: ", email_address_trim);
         
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
-        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address_trim).get();
         console.log("Email Address Checked Successfully");
 
         // Check if email_address already exists
@@ -168,13 +173,16 @@ const firebaseLogin = async (data) => {
 // Firebase Forget password
 const firebaseForgotPassword = async (data) => {
     try{
-        const { email_address_ } = data;
+        const { email_address } = data;
 
-        let email_address = email_address_.trim();
+        // let email_address = email_address_.trim();
+        console.log("Email addressuntrim: ", email_address);
+        let email_address_trim = email_address.trim();
+        console.log("Email address: ", email_address_trim);
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
-        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address_trim).get();
         console.log("Email Address Checked Successfully");
 
         // Check if email_address already exists
@@ -201,7 +209,7 @@ const firebaseForgotPassword = async (data) => {
             let userId = user.id;
             let userData = {
                 name: name,
-                email_address: email_address,
+                email_address: email_address_trim,
                 phone_number: phone_number,
                 id: userId
             }
@@ -273,13 +281,16 @@ const sendEmail = async (data) => {
 // Firebase Pssword Reset
 const firebaseChangePassword = async (data) => {
     try{
-        const { email_address_, password, new_password } = data;
+        const { email_address, password, new_password } = data;
 
-        let email_address = email_address_.trim();
+        // let email_address = email_address_.trim();
+        console.log("Email addressuntrim: ", email_address);
+        let email_address_trim = email_address.trim();
+        console.log("Email address: ", email_address_trim);
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
-        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address).get();
+        let checkEmail = await firebase.collection('users').where('email_address', '==', email_address_trim).get();
         console.log("Email Address Checked Successfully");
         
         // Check if email_address already exists
