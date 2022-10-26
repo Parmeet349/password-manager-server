@@ -14,9 +14,9 @@ const {decodeJWT} = require('../utils/jwtHelper');
 // Firebase User Signup
 const firebaseSignup = async (data) => {
     try{
-        const { name, email_address, password, phone_number } = data;
+        const { name, email_address_, password, phone_number } = data;
 
-        email_address = email_address.trim();
+        let email_address = email_address_.trim();
 
         // Check if phone_number already exists
         console.log("Checking Phone Number Exists");
@@ -89,10 +89,10 @@ const firebaseSignup = async (data) => {
 // Firebase User Login
 const firebaseLogin = async (data) => {
     try{
-        const { email_address, password } = data;
+        const { email_address_, password } = data;
 
         // if space in start or end of email_address remove it
-        email_address = email_address.trim();
+        let email_address = email_address_.trim();
         
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -168,9 +168,9 @@ const firebaseLogin = async (data) => {
 // Firebase Forget password
 const firebaseForgotPassword = async (data) => {
     try{
-        const { email_address } = data;
+        const { email_address_ } = data;
 
-        email_address = email_address.trim();
+        let email_address = email_address_.trim();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -273,9 +273,9 @@ const sendEmail = async (data) => {
 // Firebase Pssword Reset
 const firebaseChangePassword = async (data) => {
     try{
-        const { email_address, password, new_password } = data;
+        const { email_address_, password, new_password } = data;
 
-        email_address = email_address.trim();
+        let email_address = email_address_.trim();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
