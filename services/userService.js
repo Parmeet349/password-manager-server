@@ -16,6 +16,8 @@ const firebaseSignup = async (data) => {
     try{
         const { name, email_address, password, phone_number } = data;
 
+        email_address = email_address.trim();
+
         // Check if phone_number already exists
         console.log("Checking Phone Number Exists");
         let checkPhoneNumber = await firebase.collection('users').where('phone_number', '==', phone_number).get();
@@ -88,6 +90,9 @@ const firebaseSignup = async (data) => {
 const firebaseLogin = async (data) => {
     try{
         const { email_address, password } = data;
+
+        // if space in start or end of email_address remove it
+        email_address = email_address.trim();
         
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -164,6 +169,8 @@ const firebaseLogin = async (data) => {
 const firebaseForgotPassword = async (data) => {
     try{
         const { email_address } = data;
+
+        email_address = email_address.trim();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
@@ -267,6 +274,8 @@ const sendEmail = async (data) => {
 const firebaseChangePassword = async (data) => {
     try{
         const { email_address, password, new_password } = data;
+
+        email_address = email_address.trim();
 
         // Check if email_address already exists
         console.log("Checking Email Address Exists");
