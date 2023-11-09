@@ -1,13 +1,13 @@
 {
   "type": "service_account",
-  "project_id": "password-manager-46cf9",
-  "private_key_id": "c4098f3d48c33c8ab0ae474bca092d64b6981a68",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcdUcopxAkXPdk\nxMBqMst3mGB19gfHY9ixQP+lkA87LUNUN1nSTQXD2fdPRyBLQ4S0G6Vq1PsT2hIf\nC55g06+vqYQMIBWD79d9pQzDpveXBmwDrEYAIEubO4mGVN1Qza+rtDgznr95xfBm\niYPcyGYdRp141iJSmhJ9HOHB3ZAtqzl2Zm5BAUC4FCKSjBqJhQCh8VPkbDQeqdpl\nzGd1XYarBCyyjS6Dc/aKguo5y8XBHq9RC3xW433XKrscUbNouM0N8vc60AOPHdvx\nA9lp4pulkJxKXxM+8t6foZr9/bYD7Dg+Gir8cc8eLxMIsq1z3xLRESd1rxRDUsPx\nkjHq/XdNAgMBAAECggEAJ/q14Lbz4n7Y/qhiDKEHKfvHZk0khrhGVmDoEnvh0HrL\n8hikvJ7O4tFvJxRjNag+oDFSTx62O8flCobTBSYChi4YXmrSZKDkXShQPyyKps5O\nyo96Yaze9P89MJS96thsU8Fc/R/LCMhiGil4hvG0WjXBpm99XMMfB1Zaf8nofiqU\n25ZnjNAhrmHshnUatAylLviueudVcC0LcoHbgfVVRyQISXCd9yRYUzDagwtOVg+/\n4nEBA51OCivpDbFJkMtiyilqGgDqwXcpme8DYx2iyyBu0HPnL+/Y4xbXG4ZD8AZ+\nl9+KJRWTfXDk4gFCJiT6V/iSo9GmzxpaQ8J58kbpVwKBgQDL3c+IL5HMmkoUPQCR\nr+AgbBmhuJX/FsbiWIMGf9KlmdhtWuKKcH/auIqLMf96LPcKz76IUhpGW5APtVpo\nJCDwnvmxiI90rDjQw9BFC20BegbP5NWnFs1eO4AD4L0JzqxUei7ep+lntQ3tr5vv\nbYXGr9YBggV4fiVV1Xm0x5toewKBgQDEd901R+Y9VA5EWg9xE66/XWoZIk7r7eY7\nFWgqhKMFYZcCGag//sUvuRiL+aM6qIXuqIc2N111OAWogu2NaZ5XZFaxf/lDqXDL\nWlGTMJ8jRe1sWf/mh6hhx8RWg7D2WCxZ9QDAvLOA/il62TZ5q+UgLl0ZNkFCTOvr\nsFvBUDio1wKBgQCuGZ9CDl3U/W6GGhKCWFBvX+ID2j8+uZTfd/dtdXvPMLNDsHoH\nAEwv3alzdh9Xl07iTMfKY1NNAqTkxVuP1ErNMvbKRnU8jld28cLLNBbDTBLFOAe9\nyhtYfje1GBhYZ8eD3VRpkbwidNyQP4hL0JyOMVvxrbg+TnxT8Rse59gwQQKBgD5E\nixyO7B713Au3y3sYNOM71RugLwlBfh2tvDT1ksFq27Rzs0qNEav9axU6CozVypUI\nXspFI9654bk1vdp65g9mor9hAvx54GDjAEW5PEaurAASSjOjPS+4Y7bTyCtbaLse\nFp3/cJjqdPUVkNlhLJ5Vc3ZBJs+/l2o8m+gZ58tDAoGAZjdpAhByLaEUoyu+JS6j\ngAWVFFyiTu8dsUQKjrkvekHC3aByf2ufPwp0+eK+iF3D+53dUcCcwnkSc4+8eKee\nLk/6/pdQz8LZiH/F7QlpvEQWPq89LLJV8HT4fqXSglHjmiRfQ2NbmtFb/8U2Hg5k\nfhYbCqrvn9d97DsNiJUlT4w=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-e504h@password-manager-46cf9.iam.gserviceaccount.com",
-  "client_id": "106269014550846675455",
+  "project_id": "PROJECT_ID",
+  "private_key_id": "YOUR_KEY",
+  "private_key": "YOUR_KEY",
+  "client_email": "YOUR_EMAIL",
+  "client_id": "YOUR_ID",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-e504h%40password-manager-46cf9.iam.gserviceaccount.com",
-  "databaseURL": "https://password-manager-46cf9-default-rtdb.asia-southeast1.firebasedatabase.app/"
+  "databaseURL": "DATABASE_URL"
 }
